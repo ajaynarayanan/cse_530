@@ -42,6 +42,12 @@ g++ -Wall src/mat_column_wise_copy.cpp -o bin/mat_column_wise_copy.o
 echo Compiling mat_transpose
 g++ -Wall src/mat_transpose.cpp -o bin/mat_transpose.o
 
+echo Compiling mat_gather
+g++ -Wall src/mat_gather.cpp -o bin/mat_gather.o
+
+echo Compiling mat_scatter
+g++ -Wall src/mat_scatter.cpp -o bin/mat_scatter.o
+
 # read -n 1 -s -r -p "Press any key to continue"
 
 for entry in bin/*.o

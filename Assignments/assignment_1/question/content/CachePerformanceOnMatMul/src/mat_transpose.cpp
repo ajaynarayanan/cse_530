@@ -98,7 +98,7 @@ int main (int argc, char* argv[]) {
 		filename = argv[2];
 	}
 	Result result = read (filename);
-	std::cout<<"number of matrices read : "<<result.list_of_matrices.size()+1<<"\n";
+	std::cout<<"number of matrices read : "<<result.list_of_matrices.size()<<"\n";
 	for (int k =0; k<result.list_of_matrices.size();++k)
 	{
 		cout<<"matrix : "<<k<<"\n";
