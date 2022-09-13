@@ -1,19 +1,33 @@
 #!/bin/sh
 # Compile, Run and extract trace from matmul kernel
 
-export PIN_ROOT=/home/mdl/azk6085/CSE530/pin-3.18-98332-gaebd7b1e6-gcc-linux/
-size=${1:-'10'}
-sparsity=${2:-'50'}
-input_file=${3:-'input_matrix.in'}
-build_type=${4:-'normal'}
+export PIN_ROOT=/home/ajay/Documents/CSE_530/Assignments/assignment_1/question/content/pin-3.18-98332-gaebd7b1e6-gcc-linux/
+msize=${1:-'10'}
+nsize=${2:-'10'}
+num_matrices=${3:-'1'}
+sparsity=${4:-'50'}
+input_file=${5:-'input_matrix.in'}
+generate_again=${6:-'false'}
+build_type=${7:-'normal'}
 
-python utils/random_matrix_generator.py --n $size --dump $input_file --sparsity $sparsity
+echo "Arguments:"
+echo $msize, $nsize, $num_matrices, $sparsity, $input_file, $generate_again, $build_type
+
+if  [[ $generate_again = "true" ]];
+then
+  echo "Running random matrix generator"
+  python utils/random_matrix_generator.py --m $msize --n $nsize --dump $input_file --sparsity $sparsity --numOfMatrices $num_matrices
+else
+  echo "Skipping random matrix generation"
+fi
 
 if [[ $build_type = "clean" ]];
 then
     echo 'clean build'
     rm -rf bin/
     rm -rf traces/
+    # delete logs 
+    find ./Simulator/logs/ -name '*.log' -type f -delete
 else
     echo 'recursive build'
 fi
@@ -21,29 +35,12 @@ fi
 mkdir -p bin/
 mkdir -p traces/
 
-echo Compiling Matmul_boostlib
-g++ -Wall src/matmul_boostlib.cpp -o bin/matmul_boostlib.o    
-#g++ -std=c++98 -Wall -O3 -g src/matmul_boostlib.cpp -o bin/matmul_boostlib.o -pedantic
+echo Compiling mat_column_wise_copy
+g++ -Wall src/mat_column_wise_copy.cpp -o bin/mat_column_wise_copy.o
+#g++ -std=c++98 -Wall -O3 -g src/mat_column_wise_copy.cpp -o bin/mat_column_wise_copy.o -pedantic
 
-echo Compiling Matmul_strassenalgo
-g++ -Wall src/matmul_strassenalgo.cpp -o bin/matmul_strassenalgo.o    
-#g++ -std=c++98 -Wall -O3 -g src/matmul_strassenalgo.cpp -o bin/matmul_strassenalgo.o -pedantic
 
-echo Compiling Matmul_ikjalgo
-g++ -Wall src/matmul_ikjalgo.cpp -o bin/matmul_ikjalgo.o    
-#g++ -std=c++98 -Wall -O3 -g src/matmul_ikjalgo.cpp -o bin/matmul_ikjalgo.o -pedantic
-
-echo Compiling Matmul_ijkalgo
-g++ -Wall src/matmul_ijkalgo.cpp -o bin/matmul_ijkalgo.o    
-#g++ -std=c++98 -Wall -O3 -g src/matmul_ijkalgo.cpp -o bin/matmul_ijkalgo.o -pedantic
-
-echo Compiling Matmul_csr
-g++ -Wall src/matmul_csr.cpp src/csr.h -o bin/matmul_csr.o
-#g++ -std=c++98 -Wall -O3 -g src/matmul_csr.cpp src/csr.h -o bin/matmul_csr.o -pedantic
-
-echo Compiling Matmul_smash
-g++ -Wall src/matmul_smash.cpp src/smash.h -o bin/matmul_smash.o
-#g++ -std=c++98 -Wall -O3 -g src/matmul_smash.cpp src/smash.h -o bin/matmul_csr.o -pedantic
+read -n 1 -s -r -p "Press any key to continue"
 
 for entry in bin/*.o
 do
@@ -73,4 +70,4 @@ do
   mv pinatrace.out traces/$filename  
 done
 
-source run_simulator.sh /home/mdl/azk6085/CSE530/CachePerformanceOnMatMul/traces
+source run_simulator.sh /home/ajay/Documents/CSE_530/Assignments/assignment_1/question/content/CachePerformanceOnMatMul/traces

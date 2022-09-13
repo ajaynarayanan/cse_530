@@ -2,9 +2,10 @@
 
 import yaml, cache, argparse, logging, pprint
 import pdb
-from terminaltables.other_tables import UnixTable
+from terminaltables.other_tables import UnixTable, PorcelainTable
 
 def main():
+    global logger
     #Set up our arguments
     parser = argparse.ArgumentParser(description='Simulate a cache')
     parser.add_argument('-c','--config-file', help='Configuration file for the memory heirarchy', required=True)
@@ -103,11 +104,12 @@ def print_cache(cache):
                     temp_way.append(cache.data[set_indexes[s]][w].address)
                 sets.append(temp_way)
 
-        table = UnixTable(sets)
+        table = PorcelainTable(sets)
         table.title = cache.name
         table.inner_row_border = True
         print("\n")
         print(table.table)
+        logger.info(table.table)
 
 #Loop through the instructions in the tracefile and use
 #the given memory hierarchy to find AMAT

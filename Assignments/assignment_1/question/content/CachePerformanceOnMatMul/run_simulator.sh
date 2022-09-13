@@ -7,12 +7,17 @@ cd Simulator/src/
 for entry in $input_file/*.out
 do
   f=$(echo "${entry##*/}");
+  echo $entry, $input_file
   tracename=$(echo $f| cut  -d'.' -f 1);
-  echo $tracename	
+  # remove '_traces' from tracename
+  experimentName=${tracename::-7}
   filename="${tracename}_stats.out"
-  echo "Running $tracename on simulator"
-  # time ./cache_simulator.py -pdc ../config/config_simple_multilevel -t $entry | tee stats.txt
-  mv cache_simulator.log $filename  
+  for config_path in ../config/${experimentName}/*
+  do
+    echo "Running $tracename on simulator with $config_path"
+    config_name=$(echo $config_path| grep -o '[^/]*$');
+    time ./cache_simulator.py -c "${config_path}" -t $entry -l "../logs/${experimentName}/${config_name}.log"
+  done
+  
 done
-cp *.out $input_file/
 cd -
