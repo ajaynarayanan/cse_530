@@ -56,20 +56,20 @@ Result read(string filename) {
 	return result;
 }
 
-vector< vector<int> > columnWiseCopy(vector< vector<int> > src) {
+vector< vector<int> > transpose(vector< vector<int> > src) {
 	// src is of size m*n
 	// we assume at least there is one row
 	int m = src.size(), n = src[0].size(), row, col;
 
 	// initialise dest with 0s
-	vector<vector<int>> dest(m, vector<int>(n, 0));
+	vector<vector<int>> dest(n, vector<int>(m, 0));
 
-	// copy each element column wise
+	// transpose each element column wise
 	for(col=0; col<n; ++col)
 	{
 		for(row=0; row<m; ++row)
 		{
-			dest[row][col] = src[row][col];
+			dest[col][row] = src[row][col];
 		}
 	}
 	return dest;
@@ -90,22 +90,31 @@ void printMatrix(vector< vector<int> > matrix) {
 }
 
 int main (int argc, char* argv[]) {
+	std::cout<<"test\n";
 	string filename;
 	if (argc < 3) {
-		filename = "2000.in";
+		filename = "input_matrix.in";
 	} else {
 		filename = argv[2];
 	}
 	Result result = read (filename);
-	for (auto matrix : result.list_of_matrices)
+	std::cout<<"number of matrices read : "<<result.list_of_matrices.size()+1<<"\n";
+	for (int k =0; k<result.list_of_matrices.size();++k)
+	{
+		cout<<"matrix : "<<k<<"\n";
+		vector<vector<int>> matrix = result.list_of_matrices[k];
 		printMatrix(matrix);
+	}
+
+	std::cout<<"starting the process\n";
 
 	if(result.list_of_matrices.size() == 1)
 	{	
 		vector< vector<int> > src = result.list_of_matrices[0];
 		parsec_roi_begin();
-		vector< vector<int> > dest = columnWiseCopy(src);
+		vector< vector<int> > dest = transpose(src);
 		parsec_roi_end();
+		printMatrix(dest);
 	}
 	else
 	{
@@ -115,10 +124,12 @@ int main (int argc, char* argv[]) {
 		parsec_roi_begin();
 		for(i=0; i<n; ++i)
 		{
-			vector< vector<int> > dest = columnWiseCopy(result.list_of_matrices[i]);
+			cout<<"matrix : "<<i<<"\n";
+			vector< vector<int> > dest = transpose(result.list_of_matrices[i]);
+			printMatrix(dest);
 		}
 		parsec_roi_end();
 	}
-
+	
 	return 0;
 }

@@ -5,7 +5,7 @@ import pdb
 from terminaltables.other_tables import UnixTable, PorcelainTable
 
 def main():
-    global logger
+    global logger, configs
     #Set up our arguments
     parser = argparse.ArgumentParser(description='Simulate a cache')
     parser.add_argument('-c','--config-file', help='Configuration file for the memory heirarchy', required=True)
@@ -42,6 +42,7 @@ def main():
     configs = yaml.safe_load(config_file)
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
+    logger.info(hierarchy)
 
     logger.info('Loading tracefile...')
     trace_file = open(arguments['trace_file'])
@@ -150,7 +151,15 @@ def analyze_results(hierarchy, responses, logger):
     logger.info('\nTotal cycles taken: ' + str(total_time) + '\n')
 
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
+    results = {
+        "configs" : configs,
+        "n_instructions" : n_instructions,
+        "tot_cycles" : total_time, 
+        "caches" : amat["combined"],
+        "mem" : amat["mem"]}
+    del amat["combined"]
     logger.info('\nAMATs:\n'+pprint.pformat(amat))
+    logger.info('\nSummarized Results :\n'+pprint.pformat(results))
 
 def compute_amat(level, responses, logger, results={}):
     #Check if this is main memory
@@ -176,10 +185,14 @@ def compute_amat(level, responses, logger, results={}):
         else:
             results[level.name] = 0 * compute_amat(level.next_level, responses, logger)[level.next_level.name] #trust me, this is good
 
-        logger.info(level.name)
-        logger.info('\tNumber of accesses: ' + str(n_access))
-        logger.info('\tNumber of hits: ' + str(n_access - n_miss))
-        logger.info('\tNumber of misses: ' + str(n_miss))
+        if "combined" not in results:
+            results["combined"] = {}
+        results["combined"][level.name] = { 
+                "n_access" : n_access,
+                "n_miss"  : n_miss,
+                "n_hits"  : n_access - n_miss,
+                "amat" : results[level.name]
+            }
     return results
 
 

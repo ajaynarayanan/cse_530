@@ -39,8 +39,10 @@ echo Compiling mat_column_wise_copy
 g++ -Wall src/mat_column_wise_copy.cpp -o bin/mat_column_wise_copy.o
 #g++ -std=c++98 -Wall -O3 -g src/mat_column_wise_copy.cpp -o bin/mat_column_wise_copy.o -pedantic
 
+echo Compiling mat_transpose
+g++ -Wall src/mat_transpose.cpp -o bin/mat_transpose.o
 
-read -n 1 -s -r -p "Press any key to continue"
+# read -n 1 -s -r -p "Press any key to continue"
 
 for entry in bin/*.o
 do
