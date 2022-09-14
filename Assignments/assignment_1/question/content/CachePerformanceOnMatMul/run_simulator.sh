@@ -11,12 +11,11 @@ do
   tracename=$(echo $f| cut  -d'.' -f 1);
   # remove '_traces' from tracename
   experimentName=${tracename::-7}
-  filename="${tracename}_stats.out"
   for config_path in ../config/${experimentName}/*
   do
     echo "Running $tracename on simulator with $config_path"
     config_name=$(echo $config_path| grep -o '[^/]*$');
-    time ./cache_simulator.py -c "${config_path}" -t $entry -l "../logs/${experimentName}/${config_name}.log"
+    time ./cache_simulator.py -c "${config_path}" -t $entry -l "../logs/${experimentName}/${config_name}.log" -r "../logs/${experimentName}/${experimentName}.pkl"
   done
   
 done

@@ -61,7 +61,7 @@ Result read(string filename) {
 vector<vector<int>> scatter(vector< vector<int> > src, vector<int> indices, vector<int> values) {
 	// src is of size m*n, assume row major implmentation
 	// we assume at least there is one row
-	int m = src.size(), n = src[0].size(), i, row, col;
+	int n = src[0].size(), i, row, col;
 	int ind_sz = indices.size();
 
 	// initialise dest with 0s
@@ -132,12 +132,12 @@ int main (int argc, char* argv[]) {
 	Result result = read (filename);
 	
 	std::cout<<"number of matrices read : "<<result.list_of_matrices.size()<<"\n";
-	for (int k =0; k<result.list_of_matrices.size();++k)
-	{
-		cout<<"matrix : "<<k<<"\n";
-		vector<vector<int>> matrix = result.list_of_matrices[k];
-		printMatrix(matrix);
-	}
+	// for (int k =0; k<result.list_of_matrices.size();++k)
+	// {
+	// 	cout<<"matrix : "<<k<<"\n";
+	// 	vector<vector<int>> matrix = result.list_of_matrices[k];
+	// 	printMatrix(matrix);
+	// }
 
 	std::cout<<"starting the process\n";
 
@@ -155,7 +155,7 @@ int main (int argc, char* argv[]) {
 		vector<vector<int>> dest = scatter(src, randomIndices, randomValues);
 		parsec_roi_end();
 		cout<<"Done with scattering\n";
-		printMatrix(dest);
+		// printMatrix(dest);
 	}
 	else
 	{

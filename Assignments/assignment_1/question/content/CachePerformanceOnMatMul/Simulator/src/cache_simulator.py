@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+from ast import arg
 import yaml, cache, argparse, logging, pprint
-import pdb
+import pdb, pickle
 from terminaltables.other_tables import UnixTable, PorcelainTable
 
 def main():
@@ -13,6 +14,7 @@ def main():
     parser.add_argument('-l', '--log-file', help='Log file name', required=False)
     parser.add_argument('-p', '--pretty', help='Use pretty colors', required=False, action='store_true')
     parser.add_argument('-d', '--draw-cache', help='Draw cache layouts', required=False, action='store_true')
+    parser.add_argument('-r', '--result-file', help='result file for storing metrics', required=True)
     arguments = vars(parser.parse_args())
     
     if arguments['pretty']:
@@ -28,13 +30,13 @@ def main():
 
     logger = logging.getLogger()
     fh = logging.FileHandler(log_filename)
-    sh = logging.StreamHandler()
+    # sh = logging.StreamHandler()
     logger.addHandler(fh)
-    logger.addHandler(sh)
+    # logger.addHandler(sh)
 
     fh_format = logging.Formatter('%(message)s')
     fh.setFormatter(fh_format)
-    sh.setFormatter(fh_format)
+    # sh.setFormatter(fh_format)
     logger.setLevel(logging.INFO)
     
     logger.info('Loading config...')
@@ -52,11 +54,14 @@ def main():
     trace = [item for item in trace if not (item.startswith('#') or item.startswith('Start') or item.startswith('End'))]
     logger.info('Loaded tracefile ' + arguments['trace_file'])
     logger.info('Begin simulation!')
-    simulate(hierarchy, trace, logger)
+    results = simulate(hierarchy, trace, logger)
     if arguments['draw_cache']:
         for cache in hierarchy:
             if hierarchy[cache].next_level:
                 print_cache(hierarchy[cache])
+    results["experiment_name"] = arguments['log_file'].split("/")[-1].split(".log")[0]
+    with open(arguments['result_file'], 'ab+') as handle:
+        pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 #Print the contents of a cache as a table
 #If the table is too long, it will print the first few sets,
@@ -138,7 +143,7 @@ def simulate(hierarchy, trace, logger):
         else:
             raise InvalidOpError
     logger.info('Simulation complete')
-    analyze_results(hierarchy, responses, logger)
+    return analyze_results(hierarchy, responses, logger)
 
 def analyze_results(hierarchy, responses, logger):
     #Parse all the responses from the simulation
@@ -160,6 +165,7 @@ def analyze_results(hierarchy, responses, logger):
     del amat["combined"]
     logger.info('\nAMATs:\n'+pprint.pformat(amat))
     logger.info('\nSummarized Results :\n'+pprint.pformat(results))
+    return results
 
 def compute_amat(level, responses, logger, results={}):
     #Check if this is main memory

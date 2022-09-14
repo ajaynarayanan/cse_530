@@ -28,6 +28,7 @@ then
     rm -rf traces/
     # delete logs 
     find ./Simulator/logs/ -name '*.log' -type f -delete
+    find ./Simulator/logs/ -name '*.pkl' -type f -delete
 else
     echo 'recursive build'
 fi
@@ -48,7 +49,7 @@ g++ -Wall src/mat_gather.cpp -o bin/mat_gather.o
 echo Compiling mat_scatter
 g++ -Wall src/mat_scatter.cpp -o bin/mat_scatter.o
 
-# read -n 1 -s -r -p "Press any key to continue"
+read -n 1 -s -r -p "Press any key to continue"
 
 for entry in bin/*.o
 do
