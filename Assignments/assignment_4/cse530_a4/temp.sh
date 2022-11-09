@@ -1,0 +1,1 @@
+/home/other/CSE530-FA2022/gem5/build_a4/build/X86/gem5.opt --outdir=m5out_Bubblesort --redirect-stdout --redirect-stderr /home/other/CSE530-FA2022/cse530_a4/cse530_a4_sys_config.py --cse530-core-config=test --binfile=/home/other/CSE530-FA2022/cse530_a4/benchmarks/Bubblesort

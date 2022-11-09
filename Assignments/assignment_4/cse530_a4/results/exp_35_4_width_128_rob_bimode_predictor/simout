@@ -1,0 +1,29 @@
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 22.0.0.2
+gem5 compiled Oct 18 2022 00:41:42
+gem5 started Nov  3 2022 15:05:45
+gem5 executing on e5-cse-135-07.cse.psu.edu, pid 74119
+command line: /home/other/CSE530-FA2022/gem5/build_a4/build/X86/gem5.opt --outdir=results/exp_35_4_width_128_rob_bimode_predictor --redirect-stdout --redirect-stderr /home/grads/afs6372/cse530_a4/cse530_a4_sys_config.py --cse530-core-config=custom --cse530-issue-width=4 --cse530-num-robs=128 --branch-predictor bimode --binfile=/home/grads/afs6372/cse530_a4/benchmarks/Quicksort --l1i_size 4kB --l1d_size 4kB --l2_size 32kB
+
+Unsupported cpu class. Creating CPU class with given values:             4 pipeline width,             128 ROB entries,             bimode branch_predictor
+Global frequency set at 1000000000000 ticks per second
+Beginning simulation!
+-50000
+-50000
+-49999
+-49997
+-49985
+-49964
+-49962
+-49944
+-49939
+-49915
+-49880
+-49878
+-49867
+-49866
+-49841
+-49821
+Exiting @ tick 13569718500 because exiting with last active thread context
