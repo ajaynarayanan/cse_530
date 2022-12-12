@@ -1,0 +1,50 @@
+# YAML file which keeps track of the mapping between GPUGPUSIM output and the 
+# corresponding hardware component
+
+hardware: 
+  - "SM"  # Streaming Multiprocessor 
+  - "DRAM"  # DRAM
+  - "GT"  # GigaThread scheduler
+  - "HI"  # Host interface
+  - "L2C" # L2 cache
+  - "MEM" # Memory unit
+  - "PLACEHLDR" # PLACEHLDR block
+
+hardware_ordering:
+  MEM: 2
+  PLACEHLDR: 2 
+  SM: 1
+  DRAM: 1
+  GT: 1
+  HI: 1
+  L2C: 1
+
+
+mapping:
+  IBP:   "SM"   # instruction buffer power
+  ICP:   "SM"   # instruction cache power
+  DCP:   "SM"   # data cache power
+  TCP:   "SM"   # texture cache power
+  CCP:   "SM"   # constant cache power
+  SHRDP:   "SM"   # shared memory power
+  RFP : "SM"   # Register file power
+  SPP:  "SM"   # Stream Processor power (ALU unit) / Scalar processor
+  SFUP:  "SM"   # Special Function Unit Power
+  FPUP:  "SM"   # Floating Point Unit Power 
+  SCHEDP:  "SM"   # Warp Scheduler Power
+  L2CP:  "L2C"   # L2 cache power
+  MCP:  "DRAM"   # Memory Controller power
+  NOCP:  "SM"   # Network on Chip power
+  DRAMP:  "DRAM"   # DRAM power
+  PIPEP:  "SM"   # Pipeline Duty Cycle power
+  IDLE_COREP:  "SM"   # Idle Core power
+  CONST_DYNAMICP:  "SM"   # Constant Dynamic Power
+
+count:
+  SM: 16
+  DRAM: 6
+  GT: 1
+  HI: 1 
+  L2C: 1 
+  MEM: 6
+  PLACEHLDR: 2

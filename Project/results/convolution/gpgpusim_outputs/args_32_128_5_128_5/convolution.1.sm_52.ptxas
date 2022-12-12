@@ -1,0 +1,5 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z11ConvolutionPfS_S_iiiiii' for 'sm_52'
+ptxas info    : Function properties for _Z11ConvolutionPfS_S_iiiiii
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, 4096 bytes smem, 368 bytes cmem[0]

@@ -1,0 +1,14 @@
+
+# Line Format: <unit-name>\t<width>\t<height>\t<left-x>\t<bottom-y>\t[<specific-heat>]\t[<resistivity>]
+# all dimensions are in meters
+# comment lines begin with a '#' 
+# comments and empty lines are ignored
+
+MEM1	0.001500	0.005750	0.000000	0.000000
+MEM2	0.001500	0.005750	0.021500	0.000000
+MEM3	0.001500	0.005750	0.021500	0.005750
+MEM4	0.001500	0.005750	0.021500	0.011500
+MEM5	0.001500	0.005750	0.000000	0.017250
+MEM6	0.001500	0.005750	0.021500	0.017250
+PLACEHLDR1  0.02    0.023   0.0015  0.0
+PLACEHLDR2  0.001500	0.011500	0.000000	0.005750
